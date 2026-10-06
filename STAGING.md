@@ -21,7 +21,9 @@
 6. Railway furnizează `PORT` și `RAILWAY_ENVIRONMENT_NAME`. `railway.json` pornește `python deploy/start_staging.py`. Launcher-ul refuză alte medii și configurațiile lipsă; Gunicorn folosește un worker și un thread.
 7. Verifică build-ul, `/health`, UI și persistența după restart. Integrarea AI reală și efectul anulării asupra facturării se verifică separat.
 
-Configurația locală nu creează volumul și nu expune public aplicația. Aplicația încă nu are autentificare: înainte de folosirea cheilor AI sau a datelor reale trebuie protejat accesul. Folosește inițial doar date demonstrative. JSON nu oferă tranzacții între fișiere și nu suportă în siguranță replici/workeri multipli. Evită suprapunerea a două instanțe care scriu pe același volum în timpul redeploy-ului.
+În staging, aplicația cere autentificare HTTP Basic pentru interfață, fișiere și API. Configurează `STAGING_AUTH_USERNAME` și un `STAGING_AUTH_PASSWORD` aleator de minimum 32 de caractere numai în variabilele Railway. Parola nu se salvează în Git sau în rapoarte; administratorul o poate vedea în panoul de variabile Railway. Deschide numai adresa HTTPS și introdu datele în dialogul browserului. `/health` rămâne accesibil doar pentru citire fără autentificare, pentru verificarea Railway. Pornirea staging este refuzată dacă lipsesc datele de autentificare. Cererile de modificare din alte origini sunt refuzate; răspunsurile nu sunt memorate în cache.
+
+Protecția este pentru un cont staging comun, fără roluri, administrare de utilizatori sau audit individual. Folosește inițial doar date demonstrative. Cheile AI rămân goale până la autorizarea integrărilor reale. JSON nu oferă tranzacții între fișiere și nu suportă în siguranță replici/workeri multipli. Evită suprapunerea a două instanțe care scriu pe același volum în timpul redeploy-ului.
 
 ## Verificare
 
