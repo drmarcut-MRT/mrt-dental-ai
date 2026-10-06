@@ -8,6 +8,9 @@ def create_app(test_config=None):
     if test_config:
         app.config.update(test_config)
 
+    from .auth import configure_auth
+    configure_auth(app)
+
     from .routes.main import bp as main_bp
     from .routes.media import bp as media_bp
     from .routes.transcribe import bp as transcribe_bp
